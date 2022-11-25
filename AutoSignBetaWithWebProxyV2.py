@@ -14,7 +14,18 @@ from webbot import Browser
 import sys
 import keyboard
 
-
+def checkvalid(e):
+    v='1234567890qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM@#$%^&*-_=+,./?;:'
+    for i in e:
+        if i not in v:
+            return False
+    return True
+def checkexist(text,driver):
+    try:
+        driver.find_element_by_link_text(text)
+    except:
+        return False
+    return True
 
 def main():
     url = input("Please Input The Petition Link You Want To Sign:")
@@ -23,6 +34,7 @@ def main():
     c=0
     err=0
     # if
+    
     while True:
         try:
             start = time.process_time()
@@ -40,12 +52,8 @@ def main():
             e=driver1.find_element_by_id('email_ch_text').text 
             print(e)
 
-            v='1234567890qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM@#$%^&*-_=+,./?;:'
-            def checkvalid(e):
-                for i in e:
-                    if i not in v:
-                        return False
-                return True
+            
+            
 
             if checkvalid(e) == False:
                 print('shit email')
@@ -85,20 +93,15 @@ def main():
             time.sleep(3)
             driver1.refresh()
 
-            def checkexist(text):
-                try:
-                    driver1.find_element_by_link_text(text)
-                except:
-                    return False
-                return True
+            
             time.sleep(3)
-            check = checkexist('Confirm your signature by clicking here.')
+            check = checkexist('Confirm your signature by clicking here.',driver1)
             d=0
             while check == False:
                 time.sleep(3)
                 driver1.refresh()
                 time.sleep(5)
-                check = checkexist('Confirm your signature by clicking here.')
+                check = checkexist('Confirm your signature by clicking here.',driver1)
                 d=d+1
                 if d>5:
                     driver1.quit()
